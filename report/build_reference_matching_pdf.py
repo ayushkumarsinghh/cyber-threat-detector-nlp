@@ -187,8 +187,9 @@ def build_pdf():
     story.append(Spacer(1, 10))
 
     story.append(Paragraph("Under the guidance of", cover_sub))
-    story.append(Paragraph("<b>Prof. (Dr.) Satya Ranjan Dash</b><br/>School of Computer Applications<br/>(04.05.2026 – 04.07.2026)", ParagraphStyle('CoverGuide', parent=cover_sub, fontSize=11, leading=15)))
-    story.append(Spacer(1, 15))
+    # Removed the date parenthesis as requested by user
+    story.append(Paragraph("<b>Prof. (Dr.) Satya Ranjan Dash</b><br/>School of Computer Applications", ParagraphStyle('CoverGuide', parent=cover_sub, fontSize=11, leading=15)))
+    story.append(Spacer(1, 18))
 
     story.append(Paragraph("<b>SCHOOL OF ELECTRONICS ENGINEERING</b>", ParagraphStyle('CoverSch', parent=cover_sub, fontSize=11.5, leading=15, fontName='Times-Bold')))
     story.append(Paragraph("<b>KALINGA INSTITUTE OF INDUSTRIAL TECHNOLOGY</b>", ParagraphStyle('CoverInst', parent=cover_sub, fontSize=11.5, leading=15, fontName='Times-Bold')))
@@ -802,35 +803,50 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 15: REFERENCES
+    # PAGE 15: REFERENCES (Clean, concise 5 core references as requested)
     # =========================================================================
     story.append(Paragraph("REFERENCES", page_head))
     story.append(hr())
     
     story.append(Paragraph(
-        "The following technical standards, machine learning textbooks, cybersecurity frameworks and research papers were consulted "
+        "The following core technical standards, machine learning publications, and project resources were consulted "
         "during the practical training and the preparation of this report:",
         body_text
     ))
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 14))
 
-    refs = [
-        "[1] Pedregosa, F., et al.: Scikit-learn: Machine Learning in Python, Journal of Machine Learning Research (JMLR), vol. 12, pp. 2825–2830, 2011 (supervised classification pipelines, Random Forest, Multinomial Naive Bayes, TF-IDF vectorizer).",
-        "[2] Breiman, L.: Random Forests, Machine Learning, vol. 45, no. 1, pp. 5–32, 2001 (ensemble decision tree aggregation, bootstrap bagging, Gini impurity splitting, out-of-bag error estimation).",
-        "[3] National Institute of Standards and Technology (NIST): Computer Security Incident Handling Guide, Special Publication 800-61 Revision 2, U.S. Department of Commerce, Washington, D.C., USA, 2012 (incident triage and social engineering handling).",
-        "[4] The MITRE Corporation: MITRE ATT&CK Framework — Enterprise Matrix Technique T1566: Phishing, MITRE Center for Threat-Informed Defense, McLean, VA, USA, 2024 (spearphishing links, attachment analysis, credential harvesting).",
-        "[5] Internet Engineering Task Force (IETF): RFC 5321 — Simple Mail Transfer Protocol; and RFC 5322 — Internet Message Format, Standards Track Specifications, Fremont, CA, USA, 2008 (electronic mail header parsing and body structure).",
-        "[6] Manning, C. D., Raghavan, P., and Schütze, H.: Introduction to Information Retrieval, Cambridge University Press, Cambridge, UK, 2008 (vector space classification, sublinear term-frequency weighting, inverse document frequency).",
-        "[7] Streamlit Inc.: Streamlit Open-Source Technical Documentation and Application Architecture Guide, Snowflake Computing, San Francisco, CA, USA, 2024 (reactive web UI architecture, real-time widget binding, data streaming).",
-        "[8] Verma, R., and Shashidhar, N.: Why Machine Learning for Phishing Detection? A Survey and Open Research Challenges, IEEE Access, vol. 8, pp. 10984–11002, 2020 (NLP feature engineering, semantic parsing, URL character heuristics).",
-        "[9] School of Electronics Engineering: Curriculum and Academic Guidelines for Practical Training, Bachelor of Technology (B.Tech in Electronics & Computer Science Engineering), KIIT Deemed to be University, Bhubaneswar, Odisha, India, 2025–2026.",
-        "[10] Singh, Ayush Kumar: Cyber Threat & Phishing Detection using Natural Language Processing and Machine Learning, GitHub Repository, School of Electronics Engineering, KIIT Deemed to be University, July 2026. Available: https://github.com/ayushkumarsinghh/cyber-threat-detector-nlp",
+    # Reduced from 10 down to 5 clean, focused references with generous spacing
+    clean_refs = [
+        (
+            "<b>[1] Scikit-Learn Framework:</b> Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., "
+            "et al., “Scikit-learn: Machine Learning in Python,” <i>Journal of Machine Learning Research (JMLR)</i>, vol. 12, "
+            "pp. 2825–2830, 2011."
+        ),
+        (
+            "<b>[2] Random Forest Ensembles:</b> Breiman, Leo, “Random Forests,” <i>Machine Learning</i>, vol. 45, no. 1, "
+            "pp. 5–32, 2001."
+        ),
+        (
+            "<b>[3] NIST Incident Handling Guidelines:</b> Cichonski, P., Millar, T., Grance, T., and Scarfone, K., “Computer Security "
+            "Incident Handling Guide,” <i>NIST Special Publication 800-61 Revision 2</i>, National Institute of Standards and "
+            "Technology, U.S. Department of Commerce, 2012."
+        ),
+        (
+            "<b>[4] MITRE ATT&CK Framework:</b> The MITRE Corporation, “Enterprise Matrix — Technique T1566: Phishing,” "
+            "<i>MITRE Center for Threat-Informed Defense</i>, McLean, VA, USA, 2024. [Online]. Available: https://attack.mitre.org/techniques/T1566/"
+        ),
+        (
+            "<b>[5] Project Source Repository:</b> Singh, Ayush Kumar, “Cyber Threat & Phishing Detection using Natural Language "
+            "Processing and Machine Learning,” <i>GitHub Repository</i>, School of Electronics Engineering, KIIT Deemed to be University, "
+            "July 2026. [Online]. Available: https://github.com/ayushkumarsinghh/cyber-threat-detector-nlp"
+        ),
     ]
-    for r in refs:
-        story.append(Paragraph(r, ParagraphStyle('RefEntry', parent=body_text, fontSize=8, leading=11, spaceAfter=5)))
 
-    story.append(Spacer(1, 20))
-    story.append(HRFlowable(width="100%", thickness=1, color=colors.black, spaceAfter=8, spaceBefore=0))
+    for r in clean_refs:
+        story.append(Paragraph(r, ParagraphStyle('CleanRefEntry', parent=body_text, fontSize=9, leading=14, spaceAfter=14)))
+
+    story.append(Spacer(1, 35))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.black, spaceAfter=10, spaceBefore=0))
     story.append(Paragraph("End of Practical Training Report — School of Electronics Engineering, KIIT Deemed to be University, Bhubaneswar", body_center))
 
     doc.build(story, canvasmaker=CleanNumberedCanvas)
