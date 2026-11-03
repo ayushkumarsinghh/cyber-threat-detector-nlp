@@ -10,7 +10,7 @@ from reportlab.pdfgen import canvas
 
 base_dir = r"c:\tolls\New folder\cyber-threat-detector-nlp\report"
 
-class ExactNumberedCanvas(canvas.Canvas):
+class CleanNumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._saved_page_states = []
@@ -29,7 +29,7 @@ class ExactNumberedCanvas(canvas.Canvas):
 
     def draw_page_decorations(self, page_count):
         if self._pageNumber == 1:
-            # Draw exact double borders like reference PDF Page 1
+            # Draw double border on Cover Page
             self.saveState()
             self.setStrokeColor(colors.HexColor("#000000"))
             # Outer thick rectangle
@@ -41,17 +41,11 @@ class ExactNumberedCanvas(canvas.Canvas):
             self.restoreState()
             return
         
+        # User requested: "remove footers"
+        # We only output the clean academic page number at bottom right (no footer line or text)
         self.saveState()
-        self.setFont("Times-Roman", 8.5)
-        self.setFillColor(colors.HexColor("#000000"))
-        
-        # Running bottom footer matching reference PDF
-        self.setStrokeColor(colors.HexColor("#000000"))
-        self.setLineWidth(0.6)
-        self.line(45, 42, A4[0] - 45, 42)
-        
-        footer_left = "KIIT Deemed to be University | School of Computer Applications Practical Training Report — Ayush Kumar Singh"
-        self.drawString(45, 30, footer_left)
+        self.setFont("Times-Roman", 9)
+        self.setFillColor(colors.HexColor("#333333"))
         self.drawRightString(A4[0] - 45, 30, f"Page {self._pageNumber}")
         self.restoreState()
 
@@ -69,7 +63,6 @@ def build_pdf():
 
     styles = getSampleStyleSheet()
 
-    # Typography matching reference PDF (Times-Roman / LiberationSerif)
     cover_sub = ParagraphStyle(
         'CoverSub',
         parent=styles['Normal'],
@@ -173,7 +166,7 @@ def build_pdf():
     story = []
 
     # =========================================================================
-    # PAGE 1: COVER PAGE (Exact match to reference PDF Page 1)
+    # PAGE 1: COVER PAGE (Exact match to reference B.Tech E&CSE format)
     # =========================================================================
     story.append(Spacer(1, 15))
     logo_path = os.path.join(base_dir, "kiit_logo.png")
@@ -183,63 +176,65 @@ def build_pdf():
 
     story.append(Paragraph("A Practical Training Report on", cover_sub))
     story.append(Paragraph("CYBER THREAT AND PHISHING DETECTION USING<br/>NATURAL LANGUAGE PROCESSING AND MACHINE LEARNING", cover_title))
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 8))
 
     story.append(Paragraph("Submitted in partial fulfilment of the requirements for the award of the degree of", cover_sub))
-    story.append(Paragraph("<b>Master of Computer Applications</b><br/>in<br/><b>Computer Applications</b>", ParagraphStyle('CoverDeg', parent=cover_sub, fontSize=12, leading=17, fontName='Times-Bold')))
+    story.append(Paragraph("<b>Bachelor of Technology</b><br/>in<br/><b>Electronics & Computer Science Engineering</b>", ParagraphStyle('CoverDeg', parent=cover_sub, fontSize=12, leading=17, fontName='Times-Bold')))
     story.append(Spacer(1, 8))
 
     story.append(Paragraph("by", cover_sub))
-    story.append(Paragraph("<b>Ayush Kumar Singh</b>", ParagraphStyle('CoverCand', parent=cover_sub, fontSize=12, leading=16, fontName='Times-Bold')))
+    story.append(Paragraph("<b>Ayush Kumar Singh | Roll No. 2330372</b>", ParagraphStyle('CoverCand', parent=cover_sub, fontSize=12, leading=16, fontName='Times-Bold')))
     story.append(Spacer(1, 10))
 
     story.append(Paragraph("Under the guidance of", cover_sub))
     story.append(Paragraph("<b>Prof. (Dr.) Satya Ranjan Dash</b><br/>School of Computer Applications<br/>(04.05.2026 – 04.07.2026)", ParagraphStyle('CoverGuide', parent=cover_sub, fontSize=11, leading=15)))
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 15))
 
-    story.append(Paragraph("<b>SCHOOL OF COMPUTER APPLICATIONS</b>", ParagraphStyle('CoverSch', parent=cover_sub, fontSize=11.5, leading=15, fontName='Times-Bold')))
+    story.append(Paragraph("<b>SCHOOL OF ELECTRONICS ENGINEERING</b>", ParagraphStyle('CoverSch', parent=cover_sub, fontSize=11.5, leading=15, fontName='Times-Bold')))
     story.append(Paragraph("<b>KALINGA INSTITUTE OF INDUSTRIAL TECHNOLOGY</b>", ParagraphStyle('CoverInst', parent=cover_sub, fontSize=11.5, leading=15, fontName='Times-Bold')))
     story.append(Paragraph("(Deemed to be University)<br/>Bhubaneswar – 751024, Odisha, India", cover_sub))
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 2: CERTIFICATE OF PRACTICAL TRAINING (Exact match to reference Page 2)
+    # PAGE 2: CERTIFICATE OF PRACTICAL TRAINING (Embedding Official Certificate)
     # =========================================================================
     story.append(Paragraph("CERTIFICATE OF PRACTICAL TRAINING", page_head))
     story.append(hr())
     
     cert_intro = (
         "The Practical Training Completion Certificate was issued by the School of Computer Applications, "
-        "Kalinga Institute of Industrial Technology (KIIT) Deemed to be University, Bhubaneswar – 751024, Odisha on "
-        "04/07/2026, under the guidance of Prof. (Dr.) Satya Ranjan Dash, certifying completion of the 8-Week Practical Training / "
-        "Summer Internship from 04.05.2026 to 04.07.2026."
+        "Kalinga Institute of Industrial Technology (KIIT) Deemed to be University, Bhubaneswar – 751024, Odisha, "
+        "certifying completion of the 8-Week Summer Internship in AI/ML, Cybersecurity, Image Processing, and NLP "
+        "from 04.05.2026 to 04.07.2026."
     )
     story.append(Paragraph(cert_intro, body_text))
-    story.append(Spacer(1, 8))
-
-    cert_box_path = os.path.join(base_dir, "cert_box.png")
-    if os.path.exists(cert_box_path):
-        story.append(Image(cert_box_path, width=480, height=290))
     story.append(Spacer(1, 6))
+
+    # Embed the real official certificate image provided by user
+    official_cert_path = os.path.join(base_dir, "official_certificate.png")
+    if os.path.exists(official_cert_path):
+        story.append(Image(official_cert_path, width=490, height=345))
+    story.append(Spacer(1, 4))
 
     story.append(Paragraph("Figure 0.1: Official Practical Training Completion Certificate received from School of Computer Applications, KIIT Deemed to be University (dated 04/07/2026).", caption_text))
-    story.append(Spacer(1, 6))
-    story.append(Paragraph("Copy of the official certificate — Candidate: Ayush Kumar Singh (School of Computer Applications, KIIT-DU).", caption_text))
+    story.append(Spacer(1, 4))
+    story.append(Paragraph("Copy of the original certificate — Candidate: Ayush Kumar Singh (University Roll Number: 2330372, B.Tech E&CSE, KIIT-DU).", caption_text))
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 3: CANDIDATE'S DECLARATION (Exact match to reference Page 3)
+    # PAGE 3: CANDIDATE'S DECLARATION
     # =========================================================================
     story.append(Paragraph("CANDIDATE’S DECLARATION", page_head))
     story.append(hr())
     
     decl_p1 = (
-        "I, Ayush Kumar Singh, a bonafide postgraduate student of the Master of Computer Applications (MCA) programme "
-        "at the School of Computer Applications, Kalinga Institute of Industrial Technology (KIIT) Deemed to be University, "
-        "Bhubaneswar – 751024, Odisha, hereby declare that the Practical Training Report entitled “Cyber Threat and Phishing "
-        "Detection using Natural Language Processing and Machine Learning” is an authentic and original record of the practical "
-        "training work carried out by me at the School of Computer Applications, KIIT Deemed to be University, during the period "
-        "from 04 May 2026 to 04 July 2026."
+        "I, Ayush Kumar Singh (University Roll Number: 2330372), a bonafide undergraduate student of the "
+        "Bachelor of Technology (B.Tech) programme in Electronics & Computer Science Engineering at the School of "
+        "Electronics Engineering, Kalinga Institute of Industrial Technology (KIIT) Deemed to be University, "
+        "Bhubaneswar – 751024, Odisha, hereby declare that the Practical Training Report entitled “Cyber Threat and "
+        "Phishing Detection using Natural Language Processing and Machine Learning” is an authentic and original record "
+        "of the practical training work carried out by me during the 8-Week Summer Internship (04 May 2026 to 04 July 2026) "
+        "organized by the School of Computer Applications, KIIT Deemed to be University."
     )
     decl_p2 = (
         "I further declare that the research and development of the natural language processing pipeline, sublinear TF-IDF "
@@ -262,10 +257,10 @@ def build_pdf():
     story.append(Paragraph("SUMMARY OF CANDIDATE & SUBMISSION DETAILS", sec_head))
     cand_tab = [
         [Paragraph("Candidate Name", table_head), Paragraph("Ayush Kumar Singh", table_cell)],
-        [Paragraph("Degree & Specialisation", table_head), Paragraph("Master of Computer Applications (MCA) in Computer Applications", table_cell)],
-        [Paragraph("Academic School & University", table_head), Paragraph("School of Computer Applications, KIIT Deemed to be University, Bhubaneswar", table_cell)],
-        [Paragraph("Project Mentor / Supervisor", table_head), Paragraph("Prof. (Dr.) Satya Ranjan Dash, School of Computer Applications", table_cell)],
-        [Paragraph("Training Organisation & Unit", table_head), Paragraph("School of Computer Applications, KIIT Deemed to be University, Bhubaneswar", table_cell)],
+        [Paragraph("University Roll Number", table_head), Paragraph("2330372", table_cell)],
+        [Paragraph("Degree & Specialisation", table_head), Paragraph("B.Tech in Electronics & Computer Science Engineering", table_cell)],
+        [Paragraph("Academic School & University", table_head), Paragraph("School of Electronics Engineering, KIIT Deemed to be University, Bhubaneswar", table_cell)],
+        [Paragraph("Training Organisation & Unit", table_head), Paragraph("School of Computer Applications, KIIT Deemed to be University (AI/ML/Cybersecurity/NLP)", table_cell)],
         [Paragraph("Training Period", table_head), Paragraph("04.05.2026 to 04.07.2026 (8 weeks)", table_cell)],
     ]
     t_c = Table(cand_tab, colWidths=[160, 345])
@@ -277,11 +272,11 @@ def build_pdf():
         ('LEFTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_c)
-    story.append(Spacer(1, 20))
+    story.append(Spacer(1, 16))
 
     sig_tab = [
         [Paragraph("Place: Bhubaneswar, Odisha<br/>Date: 04 July 2026", body_text),
-         Paragraph("_______________________________<br/><b>Ayush Kumar Singh</b><br/>School of Computer Applications<br/>KIIT Deemed to be University", body_text)]
+         Paragraph("_______________________________<br/><b>Ayush Kumar Singh</b><br/>University Roll Number: 2330372<br/>B.Tech (Electronics & Computer Science Engineering)", body_text)]
     ]
     t_sig = Table(sig_tab, colWidths=[250, 255])
     t_sig.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'TOP')]))
@@ -289,61 +284,59 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 4: ACKNOWLEDGEMENT (Exact match to reference Page 4)
+    # PAGE 4: ACKNOWLEDGEMENT
     # =========================================================================
     story.append(Paragraph("ACKNOWLEDGEMENT", page_head))
     story.append(hr())
     
     ack_p1 = (
-        "The successful completion of my practical training in the School of Computer Applications at KIIT Deemed to be "
-        "University, Bhubaneswar, Odisha, has been a defining milestone in my postgraduate education. It enabled me to "
-        "connect theoretical foundations of computer science, natural language processing and machine learning with practical, "
-        "real-world cybersecurity defenses against deceptive social engineering attacks."
+        "The successful completion of my summer practical training in Cyber Threat and Phishing Detection using Natural Language "
+        "Processing and Machine Learning has been a defining milestone in my undergraduate engineering education. It enabled me to "
+        "connect classroom principles of computer science, data structures, and algorithms with real-world cybersecurity defenses "
+        "against deceptive social engineering attacks."
     )
     ack_p2 = (
         "First and foremost, I express my deepest gratitude to my Project Supervisor and Mentor, <b>Prof. (Dr.) Satya Ranjan Dash</b>, "
-        "School of Computer Applications, for his invaluable technical guidance, constructive mentorship, and continuous encouragement "
-        "from 04 May 2026 to 04 July 2026. His hands-on guidance first helped me understand the complete security landscape of modern "
-        "phishing and smishing attack vectors — from synthetic corpus generation and regex tokenization to sublinear TF-IDF vectorization, "
-        "Naive Bayes probabilistic modeling, and Random Forest ensemble calibration — and then trained me to construct and deploy the "
-        "interactive Streamlit security operations dashboard."
+        "School of Computer Applications, for giving me the opportunity to undergo this rigorous 8-week training from 04 May 2026 to "
+        "04 July 2026. His hands-on guidance first helped me understand the complete security landscape of modern phishing and smishing attack "
+        "vectors — from synthetic corpus generation and regex tokenization to sublinear TF-IDF vectorization, Naive Bayes probabilistic modeling, "
+        "and Random Forest ensemble calibration — and then trained me to construct and deploy the interactive Streamlit security dashboard."
     )
     ack_p3 = (
-        "I extend my sincere appreciation to the academic leadership of the School of Computer Applications, Kalinga Institute "
-        "of Industrial Technology (KIIT) Deemed to be University, Bhubaneswar — specifically <b>Prof. (Dr.) Veena Goswami</b>, "
-        "Director General, School of Computer Applications — for providing world-class computational facilities, high-speed laboratory "
-        "infrastructure, and an industry-oriented curriculum that emphasizes applied artificial intelligence and cybersecurity. "
-        "I also thank the visionary founder of KIIT & KISS, <b>Prof. (Dr.) Achyuta Samanta</b>, whose relentless pursuit of academic "
-        "excellence has established an inspiring learning ecosystem."
+        "I extend my sincere appreciation to the academic leadership of the School of Electronics Engineering, Kalinga Institute of "
+        "Industrial Technology (KIIT) Deemed to be University, Bhubaneswar — specifically <b>Prof. Suprava Patnaik</b>, Dean, School of "
+        "Electronics Engineering, for providing an industry-oriented B.Tech curriculum that emphasizes practical automation and software engineering. "
+        "I am equally indebted to <b>Prof. (Dr.) Veena Goswami</b>, Director General, School of Computer Applications, for granting laboratory "
+        "computing access and administrative support, and to the visionary founder of KIIT & KISS, <b>Prof. (Dr.) Achyuta Samanta</b>, for his "
+        "inspiring leadership."
     )
     ack_p4 = (
-        "I also thank the computer laboratory technical staff and system administrators at the School of Computer Applications "
-        "for maintaining seamless software environments and server access throughout the internship. Finally, I am deeply grateful "
-        "to my parents, family members and fellow MCA classmates for their moral support and encouragement throughout the preparation "
-        "of this report."
+        "I also thank the laboratory technical staff at KIIT for maintaining high-speed development servers and Python computing environments. "
+        "Finally, I am deeply grateful to my parents, family members, and fellow B.Tech (E&CSE) classmates for their encouragement throughout "
+        "the internship and the preparation of this report."
     )
     story.append(Paragraph(ack_p1, body_text))
     story.append(Paragraph(ack_p2, body_text))
     story.append(Paragraph(ack_p3, body_text))
     story.append(Paragraph(ack_p4, body_text))
-    story.append(Spacer(1, 20))
-    story.append(Paragraph("School of Computer Applications<br/>KIIT Deemed to be University, Bhubaneswar – 751024", body_text))
-    story.append(Spacer(1, 10))
-    story.append(Paragraph("<b>Ayush Kumar Singh</b><br/>School of Computer Applications", body_text))
+    story.append(Spacer(1, 16))
+    story.append(Paragraph("School of Electronics Engineering<br/>KIIT Deemed to be University, Bhubaneswar – 751024", body_text))
+    story.append(Spacer(1, 8))
+    story.append(Paragraph("<b>Ayush Kumar Singh</b><br/>University Roll Number: 2330372<br/>B.Tech (Electronics & Computer Science Engineering)", body_text))
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 5: ABSTRACT (Exact match to reference Page 5)
+    # PAGE 5: ABSTRACT
     # =========================================================================
     story.append(Paragraph("ABSTRACT", page_head))
     story.append(hr())
     
     abs_p1 = (
         "This Practical Training Report documents the eight-week, full-time practical training (04 May 2026 to 04 July 2026) "
-        "completed in the School of Computer Applications, Kalinga Institute of Industrial Technology (KIIT) Deemed to be University, "
+        "completed as a Summer Intern in the School of Computer Applications, Kalinga Institute of Industrial Technology (KIIT) Deemed to be University, "
         "Bhubaneswar, Odisha. The objective of the internship was twofold: first, to understand the end-to-end linguistic, semantic and "
         "structural characteristics of modern social engineering threats (email phishing, SMS smishing, and deceptive financial extortion); "
-        "and second, to design, train, evaluate and deploy a real-time detection system using Natural Language Processing (NLP) and "
+        "and second, to learn to engineer, train, evaluate and deploy a real-time detection system using Natural Language Processing (NLP) and "
         "Machine Learning (ML) algorithms."
     )
     abs_p2 = (
@@ -385,7 +378,7 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 6: TABLE OF CONTENTS (Exact match to reference Page 6)
+    # PAGE 6: TABLE OF CONTENTS
     # =========================================================================
     story.append(Paragraph("TABLE OF CONTENTS", page_head))
     story.append(hr())
@@ -418,7 +411,7 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 7: LIST OF FIGURES AND TABLES (Exact match to reference Page 7)
+    # PAGE 7: LIST OF FIGURES AND TABLES
     # =========================================================================
     story.append(Paragraph("LIST OF FIGURES AND TABLES", page_head))
     story.append(hr())
@@ -465,15 +458,15 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 8: CHAPTER 1 - INTRODUCTION (Exact match to reference Page 8)
+    # PAGE 8: CHAPTER 1 - INTRODUCTION
     # =========================================================================
     story.append(Paragraph("CHAPTER 1 – INTRODUCTION", page_head))
     story.append(hr())
     
     story.append(Paragraph(
         "My eight-week practical training at the School of Computer Applications, KIIT Deemed to be University, was conducted in the "
-        "specialized domain of Cyber Threat and Phishing Detection and bridged my MCA coursework with hands-on NLP and Machine Learning "
-        "system engineering.",
+        "specialized domain of Cyber Threat and Phishing Detection and bridged my B.Tech (E&CSE) coursework at KIIT Deemed to be University "
+        "with hands-on NLP and Machine Learning system engineering.",
         body_text
     ))
     story.append(Spacer(1, 2))
@@ -512,7 +505,7 @@ def build_pdf():
 
     t2_data = [
         [Paragraph("Department Parameter", table_head), Paragraph("Institutional Details", table_head)],
-        [Paragraph("Institution & Department", table_cell), Paragraph("School of Computer Applications, KIIT Deemed to be University, Bhubaneswar – 751024, Odisha", table_cell)],
+        [Paragraph("Host Training Department", table_cell), Paragraph("School of Computer Applications, KIIT Deemed to be University, Bhubaneswar – 751024, Odisha", table_cell)],
         [Paragraph("Head of Department", table_cell), Paragraph("Prof. (Dr.) Veena Goswami, Director General, School of Computer Applications", table_cell)],
         [Paragraph("Project Mentor", table_cell), Paragraph("Prof. (Dr.) Satya Ranjan Dash, School of Computer Applications", table_cell)],
         [Paragraph("Key Computing Facilities", table_cell), Paragraph("High-speed workstation clusters, Python 3.13 ML environment, Scikit-Learn, Streamlit server", table_cell)],
@@ -530,7 +523,7 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 9: CHAPTER 1 - WORKFLOW & HIGHLIGHTS (Exact match to reference Page 9)
+    # PAGE 9: CHAPTER 1 - WORKFLOW & HIGHLIGHTS
     # =========================================================================
     story.append(Paragraph("1.4 Overview of the Cyber Threat Detection System & End-to-End Workflow", sec_head))
     story.append(Paragraph(
@@ -569,7 +562,7 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 10: CHAPTER 2 - ACTIVITIES & PROCESS (Exact match to reference Page 10)
+    # PAGE 10: CHAPTER 2 - ACTIVITIES & PROCESS
     # =========================================================================
     story.append(Paragraph("CHAPTER 2 – TRAINING ACTIVITIES AND TECHNICAL LEARNING", page_head))
     story.append(hr())
@@ -622,7 +615,7 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 11: CHAPTER 2 - ARCHITECTURE & SPECS (Exact match to reference Page 11)
+    # PAGE 11: CHAPTER 2 - ARCHITECTURE & SPECS
     # =========================================================================
     story.append(Paragraph("2.3 System Control Architecture & NLP Pipeline Specifications", sec_head))
     story.append(Paragraph(
@@ -663,7 +656,7 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 12: CHAPTER 2 - FEATURE SPACE & ENSEMBLE (Exact match to reference Page 12)
+    # PAGE 12: CHAPTER 2 - FEATURE SPACE & ENSEMBLE
     # =========================================================================
     story.append(Paragraph("2.4 Machine Learning Classification & Feature Engineering Architecture", sec_head))
     story.append(Paragraph(
@@ -704,7 +697,7 @@ def build_pdf():
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 13: CHAPTER 2 - TELEMETRY & SCREENSHOT (Exact match to reference Page 13)
+    # PAGE 13: CHAPTER 2 - TELEMETRY & SCREENSHOT
     # =========================================================================
     story.append(Paragraph("2.5 Model Training Telemetry & Operational Performance", sec_head))
     story.append(Paragraph(
@@ -748,13 +741,13 @@ def build_pdf():
         body_text
     ))
     story.append(Paragraph(
-        "• <b>Latency and zero false alarms:</b> Sub-12 millisecond CPU inference latency ensures that incoming message streams can be scanned in real-time without buffering bottlenecks, while 100% precision prevents legitimate university notices from being interrupted.",
+        "• <b>Latency and zero false alarms:</b> Sub-12 millisecond CPU inference latency ensures that incoming message streams can be scanned in real-time without buffering bottlenecks, while 100% precision prevents legitimate communications from being interrupted.",
         body_text
     ))
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 14: CHAPTER 3 - OUTCOMES & CONCLUSION (Exact match to reference Page 14)
+    # PAGE 14: CHAPTER 3 - OUTCOMES & CONCLUSION
     # =========================================================================
     story.append(Paragraph("CHAPTER 3 – LEARNING OUTCOMES AND CONCLUSION", page_head))
     story.append(hr())
@@ -802,14 +795,14 @@ def build_pdf():
         "(04.05.2026 to 04.07.2026), under the mentorship of Prof. (Dr.) Satya Ranjan Dash, provided an invaluable foundation in applied "
         "artificial intelligence and cybersecurity. Understanding the complete technical workflow — from synthetic corpus generation and "
         "sublinear TF-IDF vectorization to Random Forest ensemble training, Explainable AI attribution, and real-time Streamlit dashboard deployment — "
-        "directly strengthened my computer applications engineering capabilities, fulfilling all academic training requirements set forth by "
-        "the School of Computer Applications, KIIT Deemed to be University.",
+        "directly strengthened my B.Tech (E&CSE) engineering capabilities, fulfilling all academic practical training requirements set forth by "
+        "KIIT Deemed to be University.",
         body_text
     ))
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 15: REFERENCES (Exact match to reference Page 15)
+    # PAGE 15: REFERENCES
     # =========================================================================
     story.append(Paragraph("REFERENCES", page_head))
     story.append(hr())
@@ -830,18 +823,18 @@ def build_pdf():
         "[6] Manning, C. D., Raghavan, P., and Schütze, H.: Introduction to Information Retrieval, Cambridge University Press, Cambridge, UK, 2008 (vector space classification, sublinear term-frequency weighting, inverse document frequency).",
         "[7] Streamlit Inc.: Streamlit Open-Source Technical Documentation and Application Architecture Guide, Snowflake Computing, San Francisco, CA, USA, 2024 (reactive web UI architecture, real-time widget binding, data streaming).",
         "[8] Verma, R., and Shashidhar, N.: Why Machine Learning for Phishing Detection? A Survey and Open Research Challenges, IEEE Access, vol. 8, pp. 10984–11002, 2020 (NLP feature engineering, semantic parsing, URL character heuristics).",
-        "[9] School of Computer Applications: Curriculum and Academic Guidelines for Summer Practical Training (Course Code: MC-4011), Kalinga Institute of Industrial Technology (KIIT) Deemed to be University, Bhubaneswar, Odisha, India, 2025–2026.",
-        "[10] Singh, Ayush Kumar: Cyber Threat & Phishing Detection using Natural Language Processing and Machine Learning, GitHub Repository, School of Computer Applications, KIIT Deemed to be University, July 2026. Available: https://github.com/ayushkumarsinghh/cyber-threat-detector-nlp",
+        "[9] School of Electronics Engineering: Curriculum and Academic Guidelines for Practical Training, Bachelor of Technology (B.Tech in Electronics & Computer Science Engineering), KIIT Deemed to be University, Bhubaneswar, Odisha, India, 2025–2026.",
+        "[10] Singh, Ayush Kumar: Cyber Threat & Phishing Detection using Natural Language Processing and Machine Learning, GitHub Repository, School of Electronics Engineering, KIIT Deemed to be University, July 2026. Available: https://github.com/ayushkumarsinghh/cyber-threat-detector-nlp",
     ]
     for r in refs:
         story.append(Paragraph(r, ParagraphStyle('RefEntry', parent=body_text, fontSize=8, leading=11, spaceAfter=5)))
 
     story.append(Spacer(1, 20))
     story.append(HRFlowable(width="100%", thickness=1, color=colors.black, spaceAfter=8, spaceBefore=0))
-    story.append(Paragraph("End of Practical Training Report — School of Computer Applications, KIIT Deemed to be University, Bhubaneswar", body_center))
+    story.append(Paragraph("End of Practical Training Report — School of Electronics Engineering, KIIT Deemed to be University, Bhubaneswar", body_center))
 
-    doc.build(story, canvasmaker=ExactNumberedCanvas)
-    print(f"Successfully generated reference-matching PDF at: {pdf_path}")
+    doc.build(story, canvasmaker=CleanNumberedCanvas)
+    print(f"Successfully generated clean PDF at: {pdf_path}")
 
 if __name__ == "__main__":
     build_pdf()
