@@ -641,8 +641,8 @@ def build_pdf():
         [Paragraph("Dataset Ingestion Engine", table_cell), Paragraph("Balanced 100-sample corpus (50 Ham / 50 Phishing)", table_cell), Paragraph("CSV format, UTF-8 encoded text stream", table_cell), Paragraph("Supplies regionalized Indian threat scenarios across banking, utilities, and lottery scams.", table_cell)],
         [Paragraph("Text Preprocessing Pipeline", table_cell), Paragraph("Regex stripper + case folding + stop-words", table_cell), Paragraph("Python re module & Scikit-Learn lexicon", table_cell), Paragraph("Removes non-informative noise, normalizes URLs, and prunes stop-words.", table_cell)],
         [Paragraph("TF-IDF Vector Space Transformer", table_cell), Paragraph("500 feature n-grams (unigrams + bigrams)", table_cell), Paragraph("Sparse matrix representation (float64)", table_cell), Paragraph("Transforms text into numerical feature vectors using sublinear term frequency weighting.", table_cell)],
-        [Paragraph("Multinomial Naive Bayes", table_cell), Paragraph("Probabilistic classifier with Laplace smoothing", table_cell), Paragraph("alpha = 0.5 smoothing parameter", table_cell), Paragraph("Serves as fast baseline classifier providing calibrated posterior probabilities.", table_cell)],
-        [Paragraph("Random Forest Classifier", table_cell), Paragraph("100 decorrelated decision trees ensemble", table_cell), Paragraph("Gini impurity, balanced class weights", table_cell), Paragraph("Production model achieving 100% precision on malicious threats (zero false alarms).", table_cell)],
+        [Paragraph("Multinomial Naive Bayes", table_cell), Paragraph("Probabilistic classifier with Laplace smoothing", table_cell), Paragraph("alpha = 0.5 smoothing parameter", table_cell), Paragraph("Serves as fast baseline classifier providing probabilistic threat scores.", table_cell)],
+        [Paragraph("Random Forest Classifier", table_cell), Paragraph("100-tree decision ensemble with majority voting", table_cell), Paragraph("Sub-tree voting aggregation & class balancing", table_cell), Paragraph("Production model achieving 100% precision on malicious threats (zero false alarms).", table_cell)],
         [Paragraph("Streamlit Security Console", table_cell), Paragraph("Web dashboard (Port 8501, Python 3.13)", table_cell), Paragraph("HTTP / WebSocket reactive frontend", table_cell), Paragraph("Allows security analysts to test messages, view risk gauges, and inspect XAI keywords.", table_cell)],
     ]
     t_22 = Table(t22_data, colWidths=[90, 110, 115, 190])
@@ -676,23 +676,17 @@ def build_pdf():
     story.append(Paragraph("Figure 2.2: Architecture schematic of the TF-IDF feature space and Random Forest decision tree ensemble with voting aggregation.", caption_text))
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("Algorithmic Formulation of Classifiers", sec_head))
+    story.append(Paragraph("Algorithmic Principles & Decision Logic of Classifiers", sec_head))
     story.append(Paragraph(
-        "• <b>Sublinear TF-IDF transformation:</b> To prevent repetitive spam tokens from dominating the feature space, term frequency is calculated as "
-        "TF(t, d) = 1 + log(f<sub>t,d</sub>) for f<sub>t,d</sub> > 0. The Inverse Document Frequency scales down ubiquitous tokens: "
-        "IDF(t, D) = log((1 + |D|) / (1 + |{d in D : t in d}|)) + 1. An n-gram range of (1, 2) extracts 500 features capturing both individual words and composite scam phrases.",
+        "• <b>Sublinear TF-IDF feature extraction:</b> Standard word count approaches are vulnerable to manipulation by deceptive messages that artificially repeat words. Term Frequency-Inverse Document Frequency (TF-IDF) resolves this through two complementary signals: Term Frequency (dampened logarithmically to avoid repetition bias) and Inverse Document Frequency (which penalizes common words like 'the', 'is', 'for' while boosting high-information indicators such as 'kyc', 'pan', 'blocked', 'suspended'). An n-gram range of (1, 2) across 500 features captures both individual threat keywords and two-word deceptive phrases (e.g., 'account suspended', 'electricity disconnected').",
         body_text
     ))
     story.append(Paragraph(
-        "• <b>Multinomial Naive Bayes baseline:</b> Estimates class posteriors via P(y | x) &prop; P(y) &prod; P(x<sub>i</sub> | y). "
-        "Laplace smoothing (&alpha; = 0.5) eliminates zero-probability penalties for novel vocabulary: P_hat(x<sub>i</sub> | y) = (N<sub>yi</sub> + &alpha;) / (N<sub>y</sub> + &alpha;|V|), "
-        "yielding 80.00% accuracy and 96.15% ROC-AUC on holdout test data.",
+        "• <b>Multinomial Naive Bayes baseline:</b> Calculates the statistical likelihood that an incoming communication belongs to the malicious or benign class based on the frequencies of its constituent words. To ensure stable classification when facing novel attack phrasing or unseen scam URLs, Laplace add-half smoothing (alpha = 0.5) is applied to eliminate zero-probability calculation errors. In holdout testing, Naive Bayes achieved 80.00% accuracy and 96.15% ROC-AUC, serving as an effective baseline.",
         body_text
     ))
     story.append(Paragraph(
-        "• <b>Random Forest production ensemble:</b> Encompasses B = 100 decision trees trained on bootstrap resamples with randomized feature subsets (m = &radic;500 &approx; 22). "
-        "Gini impurity minimization I<sub>G</sub>(p) = 1 - &sum; p<sub>k</sub><sup>2</sup> optimizes node splits. Class weighting is set to balanced: w<sub>j</sub> = N / (2 * N<sub>j</sub>), "
-        "guaranteeing 100.00% precision on threats and 98.72% ROC-AUC discriminability.",
+        "• <b>Random Forest production ensemble:</b> While a single decision tree can be misled by ambiguous vocabulary, Random Forest builds an ensemble of 100 independent decision trees. Each tree is trained on different randomized subsets of messages and lexical features. During message screening, each tree evaluates the text independently and casts a vote. The final classification is determined by aggregating the collective votes of all 100 trees with balanced class weighting, guaranteeing 100.00% precision on malicious threats (zero false alarms) and an exceptional 98.72% ROC-AUC score.",
         body_text
     ))
     story.append(PageBreak())
@@ -775,7 +769,7 @@ def build_pdf():
     t31_data = [
         [Paragraph("Observed Technical Problem", table_head), Paragraph("Root Cause Identified", table_head), Paragraph("Proposed NLP & AI/ML Solution", table_head), Paragraph("Expected System Benefit", table_head)],
         [Paragraph("1. High false alarm rate during heuristic testing", table_cell), Paragraph("Simple keyword blocklists flagged benign banking alerts containing words like 'account' or 'balance'.", table_cell), Paragraph("Transitioned to TF-IDF n-grams with Random Forest ensemble, weighting context.", table_cell), Paragraph("Achieved 100.00% threat precision with zero false alarms on legitimate alerts.", table_cell)],
-        [Paragraph("2. Python 3.14 runtime wheel incompatibility", table_cell), Paragraph("Pre-release runtime lacked compiled C++ binary wheels for scikit-learn on Windows.", table_cell), Paragraph("Configured Python 3.13 runtime with verified wheel support across all packages.", table_cell), Paragraph("Ensured flawless build stability, fast wheel installation and reproducible execution.", table_cell)],
+        [Paragraph("2. Phishing keyword obfuscation & variations", table_cell), Paragraph("Attackers use deceptive phrasing, special characters, and casing variations to evade simple filters.", table_cell), Paragraph("Constructed unified regex cleaning pipeline, case folding, and sublinear n-gram tokenization.", table_cell), Paragraph("Standardized diverse message formats into uniform, comparable lexical features.", table_cell)],
         [Paragraph("3. Out-of-vocabulary zero-probability penalty", table_cell), Paragraph("Novel scam URLs and domain strings produced zero posterior probabilities in Naive Bayes.", table_cell), Paragraph("Configured Laplace smoothing (alpha = 0.5) and bigram context in feature vectorizer.", table_cell), Paragraph("Eliminated numerical underflow and enhanced baseline generalization on novel tokens.", table_cell)],
         [Paragraph("4. Black-box opacity and analyst resistance", table_cell), Paragraph("Security analysts resisted automated risk scores lacking verifiable decision reasoning.", table_cell), Paragraph("Engineered Explainable AI (XAI) feature importance mapper in the UI dashboard.", table_cell), Paragraph("Transparent keyword ranking enables instant human auditability of every flag.", table_cell)],
     ]
