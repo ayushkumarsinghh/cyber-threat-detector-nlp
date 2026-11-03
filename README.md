@@ -25,11 +25,24 @@ This project delivers an end-to-end Machine Learning and Natural Language Proces
   - Baseline Model: Multinomial Naive Bayes (Laplace smoothing alpha=0.5).
 - Explainable AI (XAI) Keyword Inspector: Pinpoints the specific linguistic tokens driving threat risk scores (e.g., 'urgent', 'kyc', 'suspended', 'immediately', 'pan card').
 - Interactive Streamlit Security Dashboard: A web-based operations console featuring real-time risk gauges, multi-channel threat simulation presets (Banking KYC, Lottery scam, Electricity bill cutoff, SIM block, Legitimate salary credit), and telemetry charts.
+- 15-Page Academic Practical Training Report: Complete publication-ready report and generated PDF matching KIIT School of Computer Applications guidelines.
 - Zero-Hardware Dependency: Operates on any standard CPU without requiring specialized GPU accelerators or external webcam hardware.
 
 ---
 
-## 3. System Architecture
+## 3. Application Screenshots & Live Triage Demonstration
+
+### Phishing Threat Detection & Explainable AI (XAI) Attribution
+Real-time analysis of an urgent banking scam showing the red severity card, 93.0% malicious probability meter, and the exact keywords triggering the alert:
+![Threat Detection Screenshot](report/threat_analysis_screenshot.png)
+
+### Legitimate Communication Analysis (Safe Verification)
+Verification of benign banking balance notices resulting in safe green classification with 10.0% threat risk:
+![Safe Communication Analysis](report/safe_analysis_screenshot.png)
+
+---
+
+## 4. System Architecture
 
 The data pipeline and inference architecture follow an end-to-end security screening flow:
 
@@ -66,7 +79,7 @@ The data pipeline and inference architecture follow an end-to-end security scree
 
 ---
 
-## 4. Evaluation Telemetry
+## 5. Evaluation Telemetry
 
 Evaluated on stratified out-of-sample holdout test data (25% split):
 
@@ -88,7 +101,7 @@ The 100.00% precision of Random Forest ensures that legitimate communications ar
 
 ---
 
-## 5. Repository Structure
+## 6. Repository Structure
 
 ```
 cyber-threat-detector-nlp/
@@ -104,7 +117,12 @@ cyber-threat-detector-nlp/
 |   |-- train.py                  # Model training, validation and export pipeline
 |   `-- predict.py                # Standalone inference and explainability engine
 |-- report/
-|   `-- Practical_Training_Report.md  # 15-page comprehensive KIIT internship report
+|   |-- Practical_Training_Report.md  # 15-page comprehensive KIIT internship report (Markdown)
+|   |-- Practical_Training_Report_Ayush_Kumar_Singh.pdf  # Exact 15-page publication-ready PDF
+|   |-- generate_pdf.py           # Automated PDF generation pipeline
+|   |-- threat_analysis_screenshot.png  # Live triage demonstration exhibit
+|   |-- safe_analysis_screenshot.png    # Live safe message verification exhibit
+|   `-- dashboard_screenshot.png        # Operational console exhibit
 |-- app.py                        # Streamlit interactive security web application
 |-- run_app.bat                   # 1-click Windows desktop launcher
 |-- requirements.txt              # Production dependency specifications
@@ -113,7 +131,7 @@ cyber-threat-detector-nlp/
 
 ---
 
-## 6. Installation and Execution
+## 7. Installation and Execution
 
 ### Prerequisites
 - Python 3.10 to 3.13 installed on the system.
@@ -145,7 +163,7 @@ Open your browser at `http://localhost:8501`.
 
 ---
 
-## 7. Academic Verification & Credits
+## 8. Academic Verification & Credits
 
 This project was developed by Ayush Kumar Singh during the 8-Week Summer Internship (04.05.2026 to 04.07.2026) at the School of Computer Applications, KIIT Deemed to be University, Bhubaneswar, Odisha.
 
