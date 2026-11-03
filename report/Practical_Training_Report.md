@@ -20,7 +20,8 @@
 ---
 
 ### Under the Supervision and Mentorship of:
-**Faculty Mentors & Project Supervisors**  
+**Prof. (Dr.) Satya Ranjan Dash**  
+Project Supervisor & Mentor  
 School of Computer Applications  
 KIIT Deemed to be University, Bhubaneswar  
 
@@ -47,7 +48,7 @@ commencing from **04th May 2026 to 04th July 2026** at the School of Computer Ap
 
 The practical training encompassed rigorous conceptual study, experimental design, and practical software engineering in the specialized domains of **Artificial Intelligence, Machine Learning, Cybersecurity, Image Processing, and Natural Language Processing (NLP)**.
 
-He has completed this project work under our guidance and supervision. To the best of our knowledge, the results, models, and documentation presented in this report represent authentic and original work carried out by the candidate and have not been submitted elsewhere for the award of any other degree, diploma, or fellowship.
+He has completed this project work under the guidance and direct supervision of **Prof. (Dr.) Satya Ranjan Dash**. To the best of our knowledge, the results, models, and documentation presented in this report represent authentic and original work carried out by the candidate and have not been submitted elsewhere for the award of any other degree, diploma, or fellowship.
 
 We commend his diligence, technical aptitude, and problem-solving abilities demonstrated throughout the internship tenure.
 
@@ -60,10 +61,11 @@ We commend his diligence, technical aptitude, and problem-solving abilities demo
 
 ```
 ____________________________                    ____________________________
-Project Supervisor / Mentor                     Prof. (Dr.) Veena Goswami
-School of Computer Applications                 Director General
-KIIT Deemed to be University                    School of Computer Applications
-Bhubaneswar, Odisha                             KIIT Deemed to be University
+Prof. (Dr.) Satya Ranjan Dash                   Prof. (Dr.) Veena Goswami
+Project Supervisor & Mentor                     Director General
+School of Computer Applications                 School of Computer Applications
+KIIT Deemed to be University                    KIIT Deemed to be University
+Bhubaneswar, Odisha                             Bhubaneswar, Odisha
 ```
 
 --- [PAGE BREAK: PAGE 2 OF 15] ---
@@ -72,7 +74,7 @@ Bhubaneswar, Odisha                             KIIT Deemed to be University
 
 I, **AYUSH KUMAR SINGH**, hereby declare that the practical training report entitled **"CYBER THREAT AND PHISHING DETECTION USING NATURAL LANGUAGE PROCESSING AND MACHINE LEARNING"** submitted to the **School of Computer Applications, KIIT Deemed to be University, Bhubaneswar**, is an authentic record of independent technical and practical work carried out by me during the period from **04th May 2026 to 04th July 2026**.
 
-I further declare that this report has been prepared by me under the academic mentorship of the faculty members of the School of Computer Applications, KIIT Deemed to be University. The matter embodied in this report has not been submitted by me or any other individual for the award of any other academic degree, diploma, or certificate in this or any other university or institution.
+I further declare that this report has been prepared by me under the academic mentorship and project supervision of **Prof. (Dr.) Satya Ranjan Dash**, School of Computer Applications, KIIT Deemed to be University. The matter embodied in this report has not been submitted by me or any other individual for the award of any other academic degree, diploma, or certificate in this or any other university or institution.
 
 All literature, software libraries, algorithms, and technical standards referred to in the execution of this work have been duly cited and acknowledged in the references section.
 
@@ -91,6 +93,7 @@ All literature, software libraries, algorithms, and technical standards referred
 | :--- | :--- |
 | Candidate Name | Ayush Kumar Singh |
 | Department | School of Computer Applications |
+| Project Mentor / Guide | Prof. (Dr.) Satya Ranjan Dash |
 | University | Kalinga Institute of Industrial Technology (KIIT) Deemed to be University |
 | Internship Program | 8-Week Practical Training / Summer Internship (2026) |
 | Internship Duration | 04.05.2026 to 04.07.2026 (8 Weeks) |
@@ -109,7 +112,7 @@ First and foremost, I express my deepest veneration and profound gratitude to th
 
 I convey my respectful and heartfelt gratitude to **Prof. (Dr.) Veena Goswami**, Director General, School of Computer Applications, KIIT Deemed to be University, for her constant encouragement, strategic academic leadership, and for granting the necessary computing facilities and administrative support to undertake this rigorous summer training program.
 
-I am immensely indebted to my **Project Supervisors and Faculty Mentors** in the School of Computer Applications for their insightful technical suggestions, thorough code reviews, and structured academic direction. Their constructive critiques on natural language feature extraction, machine learning evaluation methodologies, and model calibration were pivotal to the success of this cyber threat detection system.
+I am immensely indebted to my Project Supervisor and Mentor, **Prof. (Dr.) Satya Ranjan Dash**, School of Computer Applications, for his invaluable technical guidance, continuous encouragement, and structured academic direction throughout the 8 weeks. His constructive critiques on natural language feature extraction, machine learning evaluation methodologies, and model calibration were pivotal to the success of this cyber threat detection system.
 
 I extend my appreciation to the technical and administrative staff of the computer laboratories at the School of Computer Applications for maintaining robust high-speed development servers, network connectivity, and computational infrastructure throughout the 8-week internship period.
 
@@ -128,7 +131,7 @@ Date: 04th July 2026
 
 Digital communications, including electronic mail (email), short message service (SMS), and instant messaging networks, have become the primary attack surface for malicious cyber actors. Social engineering vectors such as deceptive phishing, smishing, financial extortion, and impersonation fraud account for over 80% of unauthorized access incidents globally. Traditional static security countermeasures, including rule-based keyword blocklists and domain blacklisting, suffer from high latency, susceptibility to adversarial evasion (e.g., typographical manipulation), and inability to assess contextual semantic intent.
 
-This practical training report documents the design, mathematical formulation, implementation, and deployment of **CyberShield NLP**, an end-to-end Machine Learning and Natural Language Processing system for real-time cyber threat detection and explainable triage. Developed during an 8-week summer internship (04.05.2026 to 04.07.2026) at the School of Computer Applications, KIIT Deemed to be University, the project delivers:
+This practical training report documents the design, mathematical formulation, implementation, and deployment of **CyberShield NLP**, an end-to-end Machine Learning and Natural Language Processing system for real-time cyber threat detection and explainable triage. Developed during an 8-week summer internship (04.05.2026 to 04.07.2026) under the mentorship of Prof. (Dr.) Satya Ranjan Dash at the School of Computer Applications, KIIT Deemed to be University, the project delivers:
 
 1. **Balanced Security Corpus Generation**: A curated dataset of 100 domain-authentic samples spanning critical legitimate communications (banking transaction alerts, academic updates, salary credits) and adversarial threat vectors (urgent KYC suspension scams, SIM deactivation frauds, electricity disconnection extortion, and crypto asset drainers).
 2. **Feature Engineering Pipeline**: A Term Frequency-Inverse Document Frequency (TF-IDF) vectorizer extracting unigram and bigram token sequences with sublinear term-frequency scaling and stop-word elimination.
@@ -142,6 +145,7 @@ This practical training report documents the design, mathematical formulation, i
 | :--- | :--- |
 | Project Title | Cyber Threat & Phishing Detection using NLP and Machine Learning |
 | Candidate | Ayush Kumar Singh (KIIT School of Computer Applications) |
+| Project Supervisor / Mentor | Prof. (Dr.) Satya Ranjan Dash |
 | Core Technologies | Python 3.13, Scikit-Learn, Pandas, NumPy, Streamlit, Joblib |
 | Feature Extraction | TF-IDF (Unigram + Bigram, 500 features, Sublinear TF) |
 | Best Performing Model | Random Forest Classifier (100 Estimators, Gini Index) |
@@ -229,7 +233,7 @@ This practical training report documents the design, mathematical formulation, i
 ## CHAPTER 1: INTRODUCTION & TRAINING OBJECTIVES
 
 ### 1.1 Background & Threat Landscape Formulation
-As enterprise digital transformation expands, human communication channels (e-mails, SMS, corporate messaging) have emerged as the softest target in cybersecurity perimeters. Social engineering threats capitalize on cognitive cognitive vulnerabilities rather than software buffer overflows. Cyber attackers fabricate scenarios invoking intense urgency (e.g., "Account suspended within 2 hours"), extreme authority ("Judicial court summons"), or unearned financial gain ("Winner of lottery jackpot").
+As enterprise digital transformation expands, human communication channels (e-mails, SMS, corporate messaging) have emerged as the softest target in cybersecurity perimeters. Social engineering threats capitalize on cognitive vulnerabilities rather than software buffer overflows. Cyber attackers fabricate scenarios invoking intense urgency (e.g., "Account suspended within 2 hours"), extreme authority ("Judicial court summons"), or unearned financial gain ("Winner of lottery jackpot").
 
 According to global threat intelligence standards (NIST SP 800-61 Rev. 2 and Verizon DBIR), over 80% of data breaches commence with a phishing or smishing credential harvester. Conventional signature-based defenses (MD5 hashes of attachments or static IP/URL blocklists) fail because modern cybercriminals alter domain infrastructure within minutes and mutate phrasing using generative AI. Natural Language Processing (NLP) paired with supervised Machine Learning provides a robust countermeasure by evaluating the semantic and syntactic patterns inherent to manipulative language.
 
@@ -429,7 +433,7 @@ The **100.00% Precision** of Random Forest is a critical technical asset: in sec
 
 ### 2.7 Interactive Security Dashboard Implementation
 The front-end interface was built using the **Streamlit** reactive web framework (`app.py`), providing:
-1. **Operational Header & KIIT Internship Badge**: Displays student name, roll information, internship duration, and project metadata.
+1. **Operational Header & KIIT Internship Badge**: Displays student name, roll information, internship duration, project mentor Prof. (Dr.) Satya Ranjan Dash, and project metadata.
 2. **One-Click Attack Simulator Presets**: Buttons to instantly inject standard attacks (SBI KYC Phishing, Electricity Bill Scam, SIM Deactivation, Salary Credit) for immediate demonstration.
 3. **Multi-Threshold Risk Gauge**:
    - `0% - 39%`: **SAFE / BENIGN (Green)** - Normal communication.
@@ -465,7 +469,7 @@ While CyberShield NLP exhibits 100% precision and 98.72% ROC-AUC on holdout data
 - Implementing multilingual text tokenization to detect regional Indian phishing campaigns in Hindi, Odia, and Bengali.
 
 ### 3.4 Concluding Remarks
-The practical training successfully fulfilled all objectives set forth by the School of Computer Applications, KIIT Deemed to be University. The developed **Cyber Threat & Phishing Detection System** provides an efficient, transparent, and hardware-independent security solution capable of defending human communication channels against deceptive cyber attacks.
+The practical training successfully fulfilled all objectives set forth by the School of Computer Applications, KIIT Deemed to be University. Under the mentorship of Prof. (Dr.) Satya Ranjan Dash, the developed **Cyber Threat & Phishing Detection System** provides an efficient, transparent, and hardware-independent security solution capable of defending human communication channels against deceptive cyber attacks.
 
 --- [PAGE BREAK: PAGE 14 OF 15] ---
 

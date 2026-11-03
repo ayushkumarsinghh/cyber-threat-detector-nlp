@@ -7,7 +7,6 @@ import numpy as np
 # Set page configuration
 st.set_page_config(
     page_title="CyberShield NLP - Threat & Scam Detector",
-    page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -75,12 +74,15 @@ with st.sidebar:
     **Candidate Name:**  
     Ayush Kumar Singh
 
+    **Project Mentor / Guide:**  
+    Prof. (Dr.) Satya Ranjan Dash
+
     **Institution:**  
     School of Computer Applications  
     KIIT Deemed to be University
 
     **Internship Duration:**  
-    8 Weeks Summer Internship (04.05.2026 – 04.07.2026)
+    8 Weeks Summer Internship (04.05.2026 - 04.07.2026)
 
     **Domains:**  
     AI/ML | Cybersecurity | NLP
@@ -95,7 +97,7 @@ with st.sidebar:
 
 # Main Content
 st.markdown("<div class='main-header'>CyberShield NLP Threat Scanner</div>", unsafe_allow_html=True)
-st.markdown("<div class='sub-header'>Machine Learning and NLP-powered threat detection for suspicious SMS, Email, and WhatsApp communications.</div>", unsafe_allow_html=True)
+st.markdown("<div class='sub-header'>Machine Learning and NLP-powered threat detection for suspicious SMS, Email, and communications.</div>", unsafe_allow_html=True)
 
 try:
     detector = load_detector()
@@ -176,16 +178,16 @@ with st.expander("View Model Architecture & Evaluation Telemetry"):
     
     t_col1, t_col2, t_col3, t_col4 = st.columns(4)
     metrics = detector.metrics
-    t_col1.metric("Random Forest Accuracy", f"{metrics.get('rf_accuracy', 0.98) * 100:.1f}%")
-    t_col2.metric("Precision Score", f"{metrics.get('rf_precision', 0.97) * 100:.1f}%")
-    t_col3.metric("Recall Score", f"{metrics.get('rf_recall', 0.98) * 100:.1f}%")
-    t_col4.metric("ROC-AUC Score", f"{metrics.get('rf_roc_auc', 0.99) * 100:.1f}%")
+    t_col1.metric("Random Forest Accuracy", f"{metrics.get('rf_accuracy', 0.84) * 100:.1f}%")
+    t_col2.metric("Precision Score", f"{metrics.get('rf_precision', 1.00) * 100:.1f}%")
+    t_col3.metric("Recall Score", f"{metrics.get('rf_recall', 0.67) * 100:.1f}%")
+    t_col4.metric("ROC-AUC Score", f"{metrics.get('rf_roc_auc', 0.987) * 100:.1f}%")
 
     st.markdown("""
     **Confusion Matrix Analysis:**
-    * True Negatives (Correctly identified Benign): 12
+    * True Negatives (Correctly identified Benign): 13
     * False Positives (False alarms): 0
-    * False Negatives (Missed threats): 0
-    * True Positives (Correctly identified Threats): 13
-    * **Zero False Negatives:** Critical for cybersecurity applications to prevent phishing links from bypassing defenses.
+    * False Negatives (Complex threats): 4
+    * True Positives (Correctly identified Threats): 8
+    * **Zero False Positives:** Critical for cybersecurity applications to prevent legitimate communications from being blocked.
     """)

@@ -4,6 +4,7 @@ Practical Training Project submitted in partial fulfillment of the requirements 
 
 Candidate: Ayush Kumar Singh  
 Institution: School of Computer Applications, KIIT Deemed to be University, Bhubaneswar, Odisha  
+Project Mentor / Supervisor: Prof. (Dr.) Satya Ranjan Dash  
 Target Domain: Artificial Intelligence, Natural Language Processing, and Cybersecurity  
 
 ---
@@ -148,5 +149,5 @@ Open your browser at `http://localhost:8501`.
 
 This project was developed by Ayush Kumar Singh during the 8-Week Summer Internship (04.05.2026 to 04.07.2026) at the School of Computer Applications, KIIT Deemed to be University, Bhubaneswar, Odisha.
 
-Internal Guide: Faculty Mentors, School of Computer Applications, KIIT  
+Project Mentor / Supervisor: Prof. (Dr.) Satya Ranjan Dash, School of Computer Applications, KIIT  
 Head of Department: Prof. (Dr.) Veena Goswami, Director General, School of Computer Applications, KIIT  
