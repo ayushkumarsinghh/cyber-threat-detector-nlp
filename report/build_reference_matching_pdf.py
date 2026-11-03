@@ -41,8 +41,7 @@ class CleanNumberedCanvas(canvas.Canvas):
             self.restoreState()
             return
         
-        # User requested: "remove footers"
-        # We only output the clean academic page number at bottom right (no footer line or text)
+        # Academic page number at bottom right (no footer line or text)
         self.saveState()
         self.setFont("Times-Roman", 9)
         self.setFillColor(colors.HexColor("#333333"))
@@ -57,8 +56,8 @@ def build_pdf():
         pagesize=A4,
         leftMargin=45,
         rightMargin=45,
-        topMargin=42,
-        bottomMargin=45
+        topMargin=40,
+        bottomMargin=42
     )
 
     styles = getSampleStyleSheet()
@@ -67,30 +66,30 @@ def build_pdf():
         'CoverSub',
         parent=styles['Normal'],
         fontName='Times-Roman',
-        fontSize=11,
-        leading=15,
+        fontSize=11.5,
+        leading=16,
         alignment=1,
         textColor=colors.black,
-        spaceAfter=10
+        spaceAfter=8
     )
 
     cover_title = ParagraphStyle(
         'CoverTitle',
         parent=styles['Normal'],
         fontName='Times-Bold',
-        fontSize=15,
-        leading=20,
+        fontSize=15.5,
+        leading=21,
         alignment=1,
         textColor=colors.black,
-        spaceAfter=12
+        spaceAfter=10
     )
 
     page_head = ParagraphStyle(
         'PageHead',
         parent=styles['Normal'],
         fontName='Times-Bold',
-        fontSize=13.5,
-        leading=17,
+        fontSize=15,
+        leading=19,
         textColor=colors.black,
         spaceBefore=0,
         spaceAfter=3
@@ -100,10 +99,10 @@ def build_pdf():
         'SecHead',
         parent=styles['Normal'],
         fontName='Times-Bold',
-        fontSize=10.5,
-        leading=14,
+        fontSize=11.5,
+        leading=15,
         textColor=colors.black,
-        spaceBefore=6,
+        spaceBefore=5,
         spaceAfter=3
     )
 
@@ -111,10 +110,10 @@ def build_pdf():
         'BodyTextCustom',
         parent=styles['Normal'],
         fontName='Times-Roman',
-        fontSize=9,
-        leading=13,
+        fontSize=10,
+        leading=14.5,
         textColor=colors.black,
-        spaceAfter=5,
+        spaceAfter=6,
         alignment=4 # Justified
     )
 
@@ -128,8 +127,8 @@ def build_pdf():
         'CaptionText',
         parent=styles['Normal'],
         fontName='Times-Italic',
-        fontSize=8,
-        leading=11,
+        fontSize=8.5,
+        leading=11.5,
         alignment=1,
         textColor=colors.black,
         spaceBefore=3,
@@ -140,8 +139,8 @@ def build_pdf():
         'TableHead',
         parent=styles['Normal'],
         fontName='Times-Bold',
-        fontSize=7.5,
-        leading=9.5,
+        fontSize=8.5,
+        leading=11.5,
         textColor=colors.black
     )
 
@@ -149,8 +148,8 @@ def build_pdf():
         'TableCell',
         parent=styles['Normal'],
         fontName='Times-Roman',
-        fontSize=7.5,
-        leading=9.5,
+        fontSize=8.5,
+        leading=11.5,
         textColor=colors.black
     )
 
@@ -166,38 +165,37 @@ def build_pdf():
     story = []
 
     # =========================================================================
-    # PAGE 1: COVER PAGE (Exact match to reference B.Tech E&CSE format)
+    # PAGE 1: COVER PAGE
     # =========================================================================
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 20))
     logo_path = os.path.join(base_dir, "kiit_logo.png")
     if os.path.exists(logo_path):
-        story.append(Image(logo_path, width=125, height=95))
-    story.append(Spacer(1, 15))
+        story.append(Image(logo_path, width=130, height=98))
+    story.append(Spacer(1, 16))
 
     story.append(Paragraph("A Practical Training Report on", cover_sub))
     story.append(Paragraph("CYBER THREAT AND PHISHING DETECTION USING<br/>NATURAL LANGUAGE PROCESSING AND MACHINE LEARNING", cover_title))
-    story.append(Spacer(1, 8))
-
-    story.append(Paragraph("Submitted in partial fulfilment of the requirements for the award of the degree of", cover_sub))
-    story.append(Paragraph("<b>Bachelor of Technology</b><br/>in<br/><b>Electronics & Computer Science Engineering</b>", ParagraphStyle('CoverDeg', parent=cover_sub, fontSize=12, leading=17, fontName='Times-Bold')))
-    story.append(Spacer(1, 8))
-
-    story.append(Paragraph("by", cover_sub))
-    story.append(Paragraph("<b>Ayush Kumar Singh | Roll No. 2330372</b>", ParagraphStyle('CoverCand', parent=cover_sub, fontSize=12, leading=16, fontName='Times-Bold')))
     story.append(Spacer(1, 10))
 
-    story.append(Paragraph("Under the guidance of", cover_sub))
-    # Removed the date parenthesis as requested by user
-    story.append(Paragraph("<b>Prof. (Dr.) Satya Ranjan Dash</b><br/>School of Computer Applications", ParagraphStyle('CoverGuide', parent=cover_sub, fontSize=11, leading=15)))
-    story.append(Spacer(1, 18))
+    story.append(Paragraph("Submitted in partial fulfilment of the requirements for the award of the degree of", cover_sub))
+    story.append(Paragraph("<b>Bachelor of Technology</b><br/>in<br/><b>Electronics & Computer Science Engineering</b>", ParagraphStyle('CoverDeg', parent=cover_sub, fontSize=12.5, leading=17.5, fontName='Times-Bold')))
+    story.append(Spacer(1, 12))
 
-    story.append(Paragraph("<b>SCHOOL OF ELECTRONICS ENGINEERING</b>", ParagraphStyle('CoverSch', parent=cover_sub, fontSize=11.5, leading=15, fontName='Times-Bold')))
-    story.append(Paragraph("<b>KALINGA INSTITUTE OF INDUSTRIAL TECHNOLOGY</b>", ParagraphStyle('CoverInst', parent=cover_sub, fontSize=11.5, leading=15, fontName='Times-Bold')))
+    story.append(Paragraph("by", cover_sub))
+    story.append(Paragraph("<b>Ayush Kumar Singh | Roll No. 2330372</b>", ParagraphStyle('CoverCand', parent=cover_sub, fontSize=12.5, leading=17, fontName='Times-Bold')))
+    story.append(Spacer(1, 14))
+
+    story.append(Paragraph("Under the guidance of", cover_sub))
+    story.append(Paragraph("<b>Prof. (Dr.) Satya Ranjan Dash</b><br/>School of Computer Applications", ParagraphStyle('CoverGuide', parent=cover_sub, fontSize=11.5, leading=16)))
+    story.append(Spacer(1, 35))
+
+    story.append(Paragraph("<b>SCHOOL OF ELECTRONICS ENGINEERING</b>", ParagraphStyle('CoverSch', parent=cover_sub, fontSize=12, leading=16, fontName='Times-Bold')))
+    story.append(Paragraph("<b>KALINGA INSTITUTE OF INDUSTRIAL TECHNOLOGY</b>", ParagraphStyle('CoverInst', parent=cover_sub, fontSize=12, leading=16, fontName='Times-Bold')))
     story.append(Paragraph("(Deemed to be University)<br/>Bhubaneswar – 751024, Odisha, India", cover_sub))
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 2: CERTIFICATE OF PRACTICAL TRAINING (Embedding Official Certificate)
+    # PAGE 2: CERTIFICATE OF PRACTICAL TRAINING
     # =========================================================================
     story.append(Paragraph("CERTIFICATE OF PRACTICAL TRAINING", page_head))
     story.append(hr())
@@ -209,17 +207,18 @@ def build_pdf():
         "from 04.05.2026 to 04.07.2026."
     )
     story.append(Paragraph(cert_intro, body_text))
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 8))
 
-    # Embed the real official certificate image provided by user
     official_cert_path = os.path.join(base_dir, "official_certificate.png")
     if os.path.exists(official_cert_path):
-        story.append(Image(official_cert_path, width=490, height=345))
-    story.append(Spacer(1, 4))
+        story.append(Image(official_cert_path, width=495, height=395))
+    story.append(Spacer(1, 6))
 
     story.append(Paragraph("Figure 0.1: Official Practical Training Completion Certificate received from School of Computer Applications, KIIT Deemed to be University (dated 04/07/2026).", caption_text))
     story.append(Spacer(1, 4))
-    story.append(Paragraph("Copy of the original certificate — Candidate: Ayush Kumar Singh (University Roll Number: 2330372, B.Tech E&CSE, KIIT-DU).", caption_text))
+    story.append(Paragraph("Archival verification copy — Candidate: Ayush Kumar Singh (University Roll Number: 2330372, B.Tech E&CSE, KIIT-DU).", caption_text))
+    story.append(Spacer(1, 10))
+    story.append(Paragraph("<b>Training Duration:</b> 04.05.2026 to 04.07.2026 (8 Weeks) &nbsp;|&nbsp; <b>Host Unit:</b> School of Computer Applications &nbsp;|&nbsp; <b>Status:</b> Completed & Evaluated", ParagraphStyle('CertMeta', parent=caption_text, fontName='Times-Roman', fontSize=8.5, leading=11)))
     story.append(PageBreak())
 
     # =========================================================================
@@ -253,7 +252,7 @@ def build_pdf():
     story.append(Paragraph(decl_p1, body_text))
     story.append(Paragraph(decl_p2, body_text))
     story.append(Paragraph(decl_p3, body_text))
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 8))
 
     story.append(Paragraph("SUMMARY OF CANDIDATE & SUBMISSION DETAILS", sec_head))
     cand_tab = [
@@ -268,18 +267,18 @@ def build_pdf():
     t_c.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (0,-1), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 4.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4.5),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_c)
-    story.append(Spacer(1, 16))
+    story.append(Spacer(1, 30))
 
     sig_tab = [
-        [Paragraph("Place: Bhubaneswar, Odisha<br/>Date: 04 July 2026", body_text),
-         Paragraph("_______________________________<br/><b>Ayush Kumar Singh</b><br/>University Roll Number: 2330372<br/>B.Tech (Electronics & Computer Science Engineering)", body_text)]
+        [Paragraph("<b>Place:</b> Bhubaneswar, Odisha<br/><b>Date:</b> 03 November 2026", body_text),
+         Paragraph("_______________________________<br/><b>Ayush Kumar Singh</b><br/>University Roll Number: 2330372<br/>B.Tech (Electronics & Computer Science Engineering)<br/>School of Electronics Engineering", body_text)]
     ]
-    t_sig = Table(sig_tab, colWidths=[250, 255])
+    t_sig = Table(sig_tab, colWidths=[240, 265])
     t_sig.setStyle(TableStyle([('VALIGN', (0,0), (-1,-1), 'TOP')]))
     story.append(t_sig)
     story.append(PageBreak())
@@ -320,9 +319,9 @@ def build_pdf():
     story.append(Paragraph(ack_p2, body_text))
     story.append(Paragraph(ack_p3, body_text))
     story.append(Paragraph(ack_p4, body_text))
-    story.append(Spacer(1, 16))
-    story.append(Paragraph("School of Electronics Engineering<br/>KIIT Deemed to be University, Bhubaneswar – 751024", body_text))
-    story.append(Spacer(1, 8))
+    story.append(Spacer(1, 55))
+    story.append(Paragraph("<b>School of Electronics Engineering</b><br/>Kalinga Institute of Industrial Technology (KIIT) Deemed to be University<br/>Bhubaneswar – 751024, Odisha, India", body_text))
+    story.append(Spacer(1, 24))
     story.append(Paragraph("<b>Ayush Kumar Singh</b><br/>University Roll Number: 2330372<br/>B.Tech (Electronics & Computer Science Engineering)", body_text))
     story.append(PageBreak())
 
@@ -364,15 +363,19 @@ def build_pdf():
     abs_tab = [
         [Paragraph("Core Technical Domains", table_head),
          Paragraph("Cyber Threat Detection; Natural Language Processing (NLP); TF-IDF Sublinear N-gram Feature Space; Multinomial Naive Bayes; Random Forest Ensemble; Explainable AI (XAI); Streamlit Security Console", table_cell)],
+        [Paragraph("Machine Learning Architecture", table_head),
+         Paragraph("Dual-classifier framework: Multinomial Naive Bayes (Laplace alpha=0.5) baseline alongside 100-tree Random Forest voting ensemble with balanced class weighting and sublinear TF n-grams.", table_cell)],
         [Paragraph("Key Operational Outcomes", table_head),
          Paragraph("100.00% threat precision (zero false alarms on legitimate communications); 98.72% ROC-AUC class discriminability; real-time explainable token extraction; sub-12ms inference latency; zero external hardware dependency", table_cell)],
+        [Paragraph("Deployment Platform", table_head),
+         Paragraph("Interactive web dashboard running on Streamlit (Port 8501) with tri-color risk gauge, one-click scam simulation test buttons, and tabular Explainable AI keyword impact inspector.", table_cell)],
     ]
-    t_abs = Table(abs_tab, colWidths=[150, 355])
+    t_abs = Table(abs_tab, colWidths=[140, 365])
     t_abs.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (0,-1), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('TOPPADDING', (0,0), (-1,-1), 4.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4.5),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_abs)
@@ -383,13 +386,17 @@ def build_pdf():
     # =========================================================================
     story.append(Paragraph("TABLE OF CONTENTS", page_head))
     story.append(hr())
-    story.append(Paragraph("This 15-page report is organised as follows; every section, chapter and technical diagram is mapped to its page number.", body_text))
-    story.append(Spacer(1, 4))
+    story.append(Paragraph(
+        "This 15-page practical training report is organised into three core technical chapters, prefatory academic declarations, "
+        "telemetry exhibits, and reference standards as indexed below:",
+        body_text
+    ))
+    story.append(Spacer(1, 8))
 
     toc_tab = [
         [Paragraph("Section / Chapter", table_head), Paragraph("Title and Sub-Section Breakdown", table_head), Paragraph("Page No.", table_head)],
         [Paragraph("Cover Page", table_cell), Paragraph("Title, Institutional Header, and Candidate & Internship Particulars", table_cell), Paragraph("01", table_cell_center)],
-        [Paragraph("Certificate", table_cell), Paragraph("Certificate of Practical Training (Full-Page Completion Certificate)", table_cell), Paragraph("02", table_cell_center)],
+        [Paragraph("Certificate", table_cell), Paragraph("Certificate of Practical Training (Official Completion Certificate)", table_cell), Paragraph("02", table_cell_center)],
         [Paragraph("Declaration", table_cell), Paragraph("Candidate’s Declaration of Originality and Academic Compliance", table_cell), Paragraph("03", table_cell_center)],
         [Paragraph("Acknowledgement", table_cell), Paragraph("Acknowledgement of Faculty Mentors and KIIT University Leadership", table_cell), Paragraph("04", table_cell_center)],
         [Paragraph("Abstract", table_cell), Paragraph("Technical Abstract: Cyber Threat Detection & NLP/ML Architecture", table_cell), Paragraph("05", table_cell_center)],
@@ -400,15 +407,17 @@ def build_pdf():
         [Paragraph("Chapter 3<br/><b>LEARNING OUTCOMES<br/>AND CONCLUSION</b>", table_cell), Paragraph("3.1 Technical Skills Acquired in AI/ML & Cybersecurity<br/>3.2 Technical Problems Observed & 3.3 Proposed Engineering Solutions<br/>3.4 Conclusion", table_cell), Paragraph("14", table_cell_center)],
         [Paragraph("References", table_cell), Paragraph("REFERENCES & TECHNICAL STANDARDS", table_cell), Paragraph("15", table_cell_center)],
     ]
-    t_toc = Table(toc_tab, colWidths=[105, 335, 65])
+    t_toc = Table(toc_tab, colWidths=[110, 330, 65])
     t_toc.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 7.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 7.5),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_toc)
+    story.append(Spacer(1, 20))
+    story.append(Paragraph("<i>Note: All practical training activities and software artifacts conform to the academic curriculum prescribed by the School of Electronics Engineering, KIIT Deemed to be University.</i>", caption_text))
     story.append(PageBreak())
 
     # =========================================================================
@@ -430,12 +439,12 @@ def build_pdf():
     t_lof.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 5.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5.5),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_lof)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 14))
 
     story.append(Paragraph("List of Tables", sec_head))
     lot_tab = [
@@ -451,8 +460,8 @@ def build_pdf():
     t_lot.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 5.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5.5),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_lot)
@@ -493,12 +502,12 @@ def build_pdf():
     t_1.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 2.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_1)
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
 
     story.append(Paragraph("1.3 Department Overview — School of Computer Applications, KIIT", sec_head))
     story.append(Paragraph("The School of Computer Applications at KIIT Deemed to be University operates advanced laboratories dedicated to AI, Data Science, and Information Security.", body_text))
@@ -516,8 +525,8 @@ def build_pdf():
     t_2.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (0,-1), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 2.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_2)
@@ -537,7 +546,7 @@ def build_pdf():
 
     flow_path = os.path.join(base_dir, "flow_diagram.png")
     if os.path.exists(flow_path):
-        story.append(Image(flow_path, width=490, height=225))
+        story.append(Image(flow_path, width=495, height=230))
     story.append(Spacer(1, 4))
 
     story.append(Paragraph("Figure 1.1: End-to-end step-by-step workflow of the Cyber Threat & Phishing Detection System, supervised and coded through Python and Scikit-Learn.", caption_text))
@@ -575,7 +584,7 @@ def build_pdf():
         "summarises the domain-wise activities.",
         body_text
     ))
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 3))
 
     story.append(Paragraph("Table 2.1: Domain-wise activities in the Cyber Threat Detection project", caption_text))
     t21_data = [
@@ -585,16 +594,16 @@ def build_pdf():
         [Paragraph("3. Feature Extraction & Vectorization", table_cell), Paragraph("TfidfVectorizer, sublinear TF scaling, unigram + bigram (1,2) vocabulary extractor.", table_cell), Paragraph("Extracted 500 most discriminative n-gram features; transformed variable-length messages into sparse numerical vectors.", table_cell)],
         [Paragraph("4. Model Training & Explainable AI", table_cell), Paragraph("Random Forest (100 trees), Multinomial Naive Bayes, Joblib serializers, Streamlit UI.", table_cell), Paragraph("Trained classifiers, achieved 100% precision and 98.72% ROC-AUC; engineered Explainable AI (XAI) feature attribution.", table_cell)],
     ]
-    t_21 = Table(t21_data, colWidths=[90, 160, 255])
+    t_21 = Table(t21_data, colWidths=[95, 155, 255])
     t_21.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 2.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
+        ('TOPPADDING', (0,0), (-1,-1), 4.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4.5),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_21)
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 6))
 
     story.append(Paragraph("2.2 Step-by-Step Technical Process of the Cyber Threat Detector", sec_head))
     story.append(Paragraph(
@@ -625,15 +634,15 @@ def build_pdf():
         "Table 2.2 details the specification of each subsystem.",
         body_text
     ))
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
 
     arch_path = os.path.join(base_dir, "arch_diagram.png")
     if os.path.exists(arch_path):
-        story.append(Image(arch_path, width=490, height=175))
-    story.append(Spacer(1, 4))
+        story.append(Image(arch_path, width=495, height=180))
+    story.append(Spacer(1, 3))
 
     story.append(Paragraph("Figure 2.1: Three-layer system control architecture connecting input communication channels, coded NLP/ML models, and security dashboard.", caption_text))
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
 
     story.append(Paragraph("Table 2.2: Technical specifications of software utilities, algorithms, and libraries", caption_text))
     t22_data = [
@@ -649,8 +658,8 @@ def build_pdf():
     t_22.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 2.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_22)
@@ -670,7 +679,7 @@ def build_pdf():
 
     ens_path = os.path.join(base_dir, "ensemble_schematic.png")
     if os.path.exists(ens_path):
-        story.append(Image(ens_path, width=490, height=185))
+        story.append(Image(ens_path, width=495, height=185))
     story.append(Spacer(1, 4))
 
     story.append(Paragraph("Figure 2.2: Architecture schematic of the TF-IDF feature space and Random Forest decision tree ensemble with voting aggregation.", caption_text))
@@ -700,15 +709,15 @@ def build_pdf():
         "In my internship role, developing the TF-IDF and Random Forest classification pipeline automated the threat detection cycle (Figure 2.3 and Table 2.3).",
         body_text
     ))
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
 
     screen_path = os.path.join(base_dir, "threat_analysis_screenshot.png")
     if os.path.exists(screen_path):
-        story.append(Image(screen_path, width=490, height=210))
+        story.append(Image(screen_path, width=495, height=205))
     story.append(Spacer(1, 3))
 
     story.append(Paragraph("Figure 2.3: Operational performance telemetry and live triage demonstration in the Streamlit console: (a) 93.0% malicious risk score; (b) Explainable AI (XAI) feature attribution table.", caption_text))
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
 
     story.append(Paragraph("Table 2.3: Comparison of Manual (Heuristic/Static) Rule Inspection vs. Coded NLP/ML Classifier Control Across Detection Stages", caption_text))
     t23_data = [
@@ -728,7 +737,7 @@ def build_pdf():
         ('LEFTPADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_23)
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
 
     story.append(Paragraph("2.6 Practical Engineering & Testing Observations", sec_head))
     story.append(Paragraph(
@@ -756,7 +765,7 @@ def build_pdf():
         "• <b>Machine learning coding & deployment:</b> coded stratified train/test split routines, tuned Random Forest hyperparameter estimators, eliminated false-positive alerts, serialized production models using Joblib, and deployed an interactive Streamlit operations console.",
         body_text
     ))
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 3))
 
     story.append(Paragraph("3.2 Technical Problems Observed & 3.3 Proposed Engineering Solutions", sec_head))
     story.append(Paragraph(
@@ -773,31 +782,31 @@ def build_pdf():
         [Paragraph("3. Out-of-vocabulary zero-probability penalty", table_cell), Paragraph("Novel scam URLs and domain strings produced zero posterior probabilities in Naive Bayes.", table_cell), Paragraph("Configured Laplace smoothing (alpha = 0.5) and bigram context in feature vectorizer.", table_cell), Paragraph("Eliminated numerical underflow and enhanced baseline generalization on novel tokens.", table_cell)],
         [Paragraph("4. Black-box opacity and analyst resistance", table_cell), Paragraph("Security analysts resisted automated risk scores lacking verifiable decision reasoning.", table_cell), Paragraph("Engineered Explainable AI (XAI) feature importance mapper in the UI dashboard.", table_cell), Paragraph("Transparent keyword ranking enables instant human auditability of every flag.", table_cell)],
     ]
-    t_31 = Table(t31_data, colWidths=[90, 125, 145, 145])
+    t_31 = Table(t31_data, colWidths=[95, 125, 145, 140])
     t_31.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F3F4F6")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.black),
-        ('TOPPADDING', (0,0), (-1,-1), 2.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
+        ('TOPPADDING', (0,0), (-1,-1), 4.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4.5),
         ('LEFTPADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_31)
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 6))
 
     story.append(Paragraph("3.4 Conclusion", sec_head))
     story.append(Paragraph(
         "Completing my eight-week practical training in the School of Computer Applications at KIIT Deemed to be University, Bhubaneswar "
         "(04.05.2026 to 04.07.2026), under the mentorship of Prof. (Dr.) Satya Ranjan Dash, provided an invaluable foundation in applied "
         "artificial intelligence and cybersecurity. Understanding the complete technical workflow — from synthetic corpus generation and "
-        "sublinear TF-IDF vectorization to Random Forest ensemble training, Explainable AI attribution, and real-time Streamlit dashboard deployment — "
-        "directly strengthened my B.Tech (E&CSE) engineering capabilities, fulfilling all academic practical training requirements set forth by "
-        "KIIT Deemed to be University.",
+        "sublinear TF-IDF vectorization to Random Forest ensemble training, Explainable AI attribution, and real-time Streamlit dashboard "
+        "deployment — directly strengthened my B.Tech (E&CSE) engineering capabilities, fulfilling all academic practical training "
+        "requirements set forth by KIIT Deemed to be University.",
         body_text
     ))
     story.append(PageBreak())
 
     # =========================================================================
-    # PAGE 15: REFERENCES (Clean, concise 5 core references as requested)
+    # PAGE 15: REFERENCES & TECHNICAL STANDARDS
     # =========================================================================
     story.append(Paragraph("REFERENCES", page_head))
     story.append(hr())
@@ -807,9 +816,8 @@ def build_pdf():
         "during the practical training and the preparation of this report:",
         body_text
     ))
-    story.append(Spacer(1, 14))
+    story.append(Spacer(1, 8))
 
-    # Reduced from 10 down to 5 clean, focused references with generous spacing
     clean_refs = [
         (
             "<b>[1] Scikit-Learn Framework:</b> Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., "
@@ -832,15 +840,34 @@ def build_pdf():
         (
             "<b>[5] Project Source Repository:</b> Singh, Ayush Kumar, “Cyber Threat & Phishing Detection using Natural Language "
             "Processing and Machine Learning,” <i>GitHub Repository</i>, School of Electronics Engineering, KIIT Deemed to be University, "
-            "July 2026. [Online]. Available: https://github.com/ayushkumarsinghh/cyber-threat-detector-nlp"
+            "November 2026. [Online]. Available: https://github.com/ayushkumarsinghh/cyber-threat-detector-nlp"
         ),
     ]
 
     for r in clean_refs:
-        story.append(Paragraph(r, ParagraphStyle('CleanRefEntry', parent=body_text, fontSize=9, leading=14, spaceAfter=14)))
+        story.append(Paragraph(r, ParagraphStyle('CleanRefEntry', parent=body_text, fontSize=9.5, leading=14, spaceAfter=10)))
 
-    story.append(Spacer(1, 35))
-    story.append(HRFlowable(width="100%", thickness=1, color=colors.black, spaceAfter=10, spaceBefore=0))
+    story.append(Spacer(1, 8))
+    story.append(Paragraph("TECHNICAL STANDARDS & PROJECT CITATION SUMMARY", sec_head))
+    ref_map_data = [
+        [Paragraph("Citation Identifier", table_head), Paragraph("Academic / Industry Body", table_head), Paragraph("Functional Role in Cyber Threat Detection Project", table_head)],
+        [Paragraph("Ref [1] Scikit-Learn", table_cell), Paragraph("INRIA / JMLR Open Source", table_cell), Paragraph("Powers TfidfVectorizer, MultinomialNB, and RandomForestClassifier APIs.", table_cell)],
+        [Paragraph("Ref [2] Random Forests", table_cell), Paragraph("University of California, Berkeley", table_cell), Paragraph("Foundational algorithm for 100-tree ensemble voting & feature importance.", table_cell)],
+        [Paragraph("Ref [3] NIST SP 800-61", table_cell), Paragraph("National Institute of Standards", table_cell), Paragraph("Defines cybersecurity triage workflows, incident containment & logging.", table_cell)],
+        [Paragraph("Ref [4] MITRE ATT&CK", table_cell), Paragraph("The MITRE Corporation", table_cell), Paragraph("Standardized social engineering threat taxonomy (Technique T1566).", table_cell)],
+        [Paragraph("Ref [5] GitHub Repo", table_cell), Paragraph("KIIT-DU / Open Source", table_cell), Paragraph("Houses complete project source code, models, dataset, and Streamlit app.", table_cell)],
+    ]
+    t_ref_map = Table(ref_map_data, colWidths=[110, 140, 255])
+    t_ref_map.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#F3F4F6")),
+        ('GRID', (0,0), (-1,-1), 0.5, colors.black),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+    ]))
+    story.append(t_ref_map)
+    story.append(Spacer(1, 16))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.black, spaceAfter=8, spaceBefore=0))
     story.append(Paragraph("End of Practical Training Report — School of Electronics Engineering, KIIT Deemed to be University, Bhubaneswar", body_center))
 
     doc.build(story, canvasmaker=CleanNumberedCanvas)
